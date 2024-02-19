@@ -2,6 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 
+import userRoutes from './routes/users.js'
+
 const app = express()
 dotenv.config()
 
@@ -13,6 +15,8 @@ const connect = () => {
         throw(err)
     })
 }
+
+app.use("/api/users", userRoutes)
 
 app.listen(8080, () => {
     connect()
