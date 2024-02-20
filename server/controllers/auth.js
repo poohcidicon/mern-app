@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import { createError } from '../error.js'
 
 export const signup = async (req, res, next) => {
@@ -28,7 +29,14 @@ export const signin = async (req, res, next) => {
 
         if (!isCorrect) return next(createError(404, 'wrong'))
 
-        res.status(200).json(user)
+        const { password, ...other } = user._doc
+        const token = jwt.sign({
+            id: user._id
+        }, process.env.JWT)
+
+        res.cookie("access_token", token, {
+            httpOnly: true
+        }).status(200).json(other)
     }
     catch(err) {
         next(err)

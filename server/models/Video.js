@@ -32,4 +32,4 @@ const VideoSchema = new mongoose.Schema({
     },
 }, { timestamps: true })
 
-export default mongoose.Model('User', UserSchema)
+export default mongoose.model('Video', VideoSchema)

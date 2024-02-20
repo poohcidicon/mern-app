@@ -1,15 +1,17 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
 
 import userRoutes from './routes/users.js'
 import authRoutes from './routes/auth.js'
+import videoRoutes from './routes/video.js'
 
 const app = express()
 dotenv.config()
 
 const connect = () => {
-    mongoose.connect(process.env.mongodb).then(() => {
+    mongoose.connect(process.env.MONGODB).then(() => {
         console.log('Connected to DB')
     })
     .catch(err => {
@@ -18,8 +20,10 @@ const connect = () => {
 }
 
 app.use(express.json())
+app.use(cookieParser())
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
+app.use("/api/videos", videoRoutes)
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
