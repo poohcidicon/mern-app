@@ -12,12 +12,17 @@ const Container = styled.div`
 const Home = () => {
   const [videos, setVideos] = useState([])
 
+  const getMe = async () => {
+    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/users/me`)
+  }
+
   useEffect(() => {
     const fetchVideo = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_KEY}/videos`)
       setVideos(res.data || [])
     }
     fetchVideo()
+    getMe()
   }, [])
 
   return (

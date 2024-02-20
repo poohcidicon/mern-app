@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -64,14 +65,28 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const [username, setUsername] = useState(null)
+  const [password, setPassword] = useState(null)
+
+  const handleSingin = async (e) => {
+    e.preventDefault()
+    try{
+      const res = await axios.post(`${process.env.REACT_APP_API_KEY}/auth/signin`, {name: username, password})
+      console.log(res)
+    }
+    catch (err) {
+
+    }
+  }
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
         <SubTitle>to continue to LamaTube</SubTitle>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+        <Input placeholder="username" onChange={(e) => setUsername(e.target.value)}/>
+        <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}/>
+        <Button onClick={handleSingin}>Sign in</Button>
         <Title>or</Title>
         <Input placeholder="username" />
         <Input placeholder="email" />
