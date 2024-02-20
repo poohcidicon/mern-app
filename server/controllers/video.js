@@ -14,7 +14,7 @@ export const getVideo = async (req, res, next) => {
 
 export const getAll = async (req, res, next) => {
     try{
-        const videos = await Video.find()
+        const videos = await Video.find({})
         res.status(200).json(videos)
     }
     catch (err) {
