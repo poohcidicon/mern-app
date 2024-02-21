@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
@@ -6,6 +6,9 @@ import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
+import { useSelector, useDispatch } from 'react-redux'
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -105,7 +108,30 @@ const Subscribe = styled.button`
 `;
 
 const Video = () => {
-  return (
+  const { currentUser } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  const path = useLocation().pathname.split('/')[2]
+
+  console.log(path)
+
+  const [video, setVideo] = useState(null)
+  const [channel, setChannel] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const res = await axios.get(`${process.env.REACT_APP_API_KEY}/videos/find/${path}`)
+        setVideo(res.data)
+      }
+      catch (err) {
+
+      }
+    }
+    fetchData()
+  }, [])
+
+  return video ? (
     <Container>
       <Content>
         <VideoWrapper>
@@ -119,9 +145,9 @@ const Video = () => {
             allowfullscreen
           ></iframe>
         </VideoWrapper>
-        <Title>Test Video</Title>
+        <Title>{video.title}</Title>
         <Details>
-          <Info>7,948,154 views • Jun 22, 2022</Info>
+          <Info>{video.view} views • {video.createdAt}</Info>
           <Buttons>
             <Button>
               <ThumbUpOutlinedIcon /> 123
@@ -140,10 +166,10 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
+            <Image src={video.channel.name} />
             <ChannelDetail>
-              <ChannelName>Lama Dev</ChannelName>
-              <ChannelCounter>200K subscribers</ChannelCounter>
+              <ChannelName>{video.channel.name}</ChannelName>
+              <ChannelCounter>{video.channel.subscribers} subscribers</ChannelCounter>
               <Description>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Doloribus laborum delectus unde quaerat dolore culpa sit aliquam
@@ -157,7 +183,7 @@ const Video = () => {
         <Hr />
         <Comments/>
       </Content>
-      <Recommendation>
+      {/* <Recommendation>
         <Card type="sm"/>
         <Card type="sm"/>
         <Card type="sm"/>
@@ -171,9 +197,8 @@ const Video = () => {
         <Card type="sm"/>
         <Card type="sm"/>
         <Card type="sm"/>
-      </Recommendation>
-    </Container>
-  );
+      </Recommendation> */}
+    </Container> ) : <></>
 };
 
 export default Video;

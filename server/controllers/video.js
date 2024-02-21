@@ -5,7 +5,8 @@ import User from "../models/User.js"
 export const getVideo = async (req, res, next) => {
     try{
         const video = await Video.findById(req.params.id)
-        res.status(200).json(video)
+        const channel = await User.findById(video.userId)
+        res.status(200).json({ ...video._doc, channel })
     }
     catch (err) {
         next(err)

@@ -13,7 +13,7 @@ const Home = () => {
   const [videos, setVideos] = useState([])
 
   const getMe = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/users/me`)
+    const res = await axios.get(`http://localhost:8080/api/users/me`)
   }
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Home = () => {
       setVideos(res.data || [])
     }
     fetchVideo()
-    getMe()
+    // getMe()
   }, [])
 
   return (

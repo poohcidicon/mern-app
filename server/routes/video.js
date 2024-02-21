@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.get("", getAll)
 router.post("", verifyToken, addVideo)
+router.get("/find/:id", getVideo)
 // router.get("/me", verifyToken, me)
 // router.put("/sub/:id", verifyToken, updateSubId)
 // router.put("/like/:id", verifyToken, updateLikeId)
