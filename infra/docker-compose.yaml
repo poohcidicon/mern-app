@@ -1,0 +1,22 @@
+version: "3.8"
+name: mern-app
+services:
+  mern-server:
+    build: ../server/
+    ports:
+      - "8881:8080"
+    external_links:
+      - mongo
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - MONGODB=mongodb://host.docker.internal:27017/test
+      - JWT=Hellooo
+  mern-client:
+    build: ../client/
+    ports:
+      - "3006:80"
+    depends_on:
+      - mern-server
+    environment:
+      - REACT_APP_API_KEY=http://localhost:8881/api
