@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-app-server-deployment
+  namespace: mern-app
+  labels:
+    app: mern-app-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mern-app-server
+  template:
+    metadata:
+      labels:
+        app: mern-app-server
+    spec:
+      containers:
+        - name: mern-client
+          image: mern-app-mern-server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+          - name: MONGODB
+            value: "mongodb://host.docker.internal:27017/test"
+          - name: JWT
+            value: "Hellooooooo"

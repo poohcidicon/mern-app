@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-app-client-deployment
+  namespace: mern-app
+  labels:
+    app: mern-app-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mern-app-client
+  template:
+    metadata:
+      labels:
+        app: mern-app-client
+    spec:
+      containers:
+        - name: mern-client
+          image: mern-app/mern-client
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
